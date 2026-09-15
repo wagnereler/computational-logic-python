@@ -149,6 +149,10 @@ activemq-data/
 
 # Environments
 .env
+.env.*
+!.env.example
+data/*.db
+data/*.db-*
 .envrc
 .venv
 env/
@@ -216,3 +220,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Prompts locais do Codex
+docs/tasks/prompts/
+
+# Prompts e tarefas locais do Codex
+docs/tasks/
+
+# Prompts e tarefas locais do Codex
+docs/tasks/
