@@ -5,14 +5,13 @@ O factory permite banco temporário em testes sem tocar data/estoque.db.
 """
 
 from contextlib import asynccontextmanager
-import os
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
 from app.api.routers import auth, produtos
-from app.core.config import Settings
+from app.core.config import Settings, app_name_from_env
 from app.database.connection import initialize
 from app.repositories.produto_repository import ProdutoRepository
 from app.repositories.usuario_repository import UsuarioRepository
@@ -34,7 +33,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         application.state.auth_service.bootstrap_admin()
         yield
 
-    application = FastAPI(title=settings.app_name if settings else os.environ.get("APP_NAME", "Controle de Estoque"), lifespan=lifespan)
+    application = FastAPI(title=settings.app_name if settings else app_name_from_env(), lifespan=lifespan)
     application.mount("/static", StaticFiles(directory=str(Path(__file__).parent / "web" / "static")), name="static")
     application.include_router(auth.router)
     application.include_router(produtos.router)

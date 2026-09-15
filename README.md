@@ -83,33 +83,11 @@ Windows CMD:
 copy .env.example .env
 ```
 
-Após editar `.env`, carregue as variáveis no terminal que executará a aplicação. O projeto lê as variáveis do processo; copiar `.env` sozinho não configura a execução local. Recarregue-as após cada alteração.
-
-Linux e macOS:
-
-```bash
-set -a
-source .env
-set +a
-```
-
-Windows PowerShell:
-
-```powershell
-Get-Content .env | ForEach-Object { if ($_ -match '^\s*([A-Z_]+)=(.*)$') { [Environment]::SetEnvironmentVariable($matches[1], $matches[2].Trim('"'), 'Process') } }
-```
-
-Windows CMD (comando digitado diretamente no Prompt):
-
-```bat
-for /f "usebackq tokens=1,* delims==" %A in (".env") do @set "%A=%~B"
-```
-
-No CMD, use `%%A` e `%%~B` se colocar o comando em um arquivo `.bat`.
+Após editar `.env`, a aplicação carrega automaticamente o arquivo da raiz ao iniciar. Variáveis já definidas no terminal têm prioridade; as ausentes usam `.env` como fallback. Não é preciso exportar o arquivo manualmente em Linux, macOS ou Windows. Se `.env` não existir, a aplicação ainda aceita variáveis do ambiente, mas exige um segredo JWT válido para API/web.
 
 ## Executando a aplicação
 
-Com a `.venv` ativa e as variáveis carregadas, escolha um comando na raiz do projeto:
+Com a `.venv` ativa, escolha um comando na raiz do projeto. Em um novo terminal Linux ou macOS, por exemplo, basta executar `source .venv/bin/activate` e `fastapi run` após configurar `.env`:
 
 ```text
 fastapi dev
